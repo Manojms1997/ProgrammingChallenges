@@ -11,13 +11,30 @@ class CSVCombiner():
         self.output_file = ""
         self.is_print = True
         self.is_output_file = False
+        self.file_chunks = []
 
     def main(self,argv):
         #arguments validation
         self.validate_args(argv)
+        # process input csv files
+        self.process_csv_files()
+        if not self.is_output_file:
+            if not self.is_print:
+                print("enable printing on terminal or to a file!")
+                sys.exit(2)
+            self.print_csv()
+        else:
+            self.create_csv_file()
+            if self.is_print:
+                self.print_csv
+        return
 
-    def combine_csv(self):
-        pass
+    def process_csv_files(self):
+        for file in self.files:
+            file_name = os.path.basename(file)
+            chunk = pd.read_csv(file,chunksize=10**4)
+            chunk["filename"] = file_name
+            self.file_chunks.append(chunk)
 
     def print_csv():
         pass
