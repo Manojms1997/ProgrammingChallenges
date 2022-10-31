@@ -1,7 +1,6 @@
 import pandas as pd
 import os
 import sys, getopt
-import time
 
 # take command line input
 class CSVCombiner():
@@ -16,7 +15,6 @@ class CSVCombiner():
         self.combined_csv = None
 
     def main(self,argv):
-        start_time = time.time()
         #arguments validation
         self.validate_args(argv)
         # process input csv files
@@ -34,8 +32,6 @@ class CSVCombiner():
             if self.is_print:
                 self.print_csv()
 
-        to_time = time.time() - start_time
-        print("total time:", to_time)
         return
 
     def process_csv_files(self):
