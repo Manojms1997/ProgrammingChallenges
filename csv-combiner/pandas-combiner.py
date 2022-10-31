@@ -2,12 +2,12 @@ import pandas as pd
 import time
 import os
 
-# accessories_df = pd.read_csv("./fixtures/accessories.csv")
-# clothing_df = pd.read_csv("./fixtures/clothing.csv")
-# accessories_df["filename"] = "accessories"
-# clothing_df["filename"] = "clothing"
-# combined = pd.concat([accessories_df,clothing_df])
-# combined.to_csv('enrollment.csv',index=False,header=True)
+accessories_df = pd.read_csv("./fixtures/accessories.csv")
+clothing_df = pd.read_csv("./fixtures/clothing.csv")
+accessories_df["filename"] = "accessories"
+clothing_df["filename"] = "clothing"
+combined = pd.concat([accessories_df,clothing_df])
+combined.to_csv('enrollment.csv',index=False,header=True)
 
 # start_time = time.time()
 # random_df = pd.read_csv("./fixtures/random.csv")
@@ -49,9 +49,9 @@ import os
 
 
 # missing columns:
-accessories_df = pd.read_csv("./fixtures/accessories.csv")
-clothing_df = pd.read_csv("./fixtures/miss-clothing.csv")
-accessories_df["filename"] = "accessories"
-clothing_df["filename"] = "clothing"
-combined = pd.concat([accessories_df,clothing_df])
-combined.to_csv('enrollment.csv',index=False,header=True)
+# accessories_df = pd.read_csv("./fixtures/accessories.csv")
+# clothing_df = pd.read_csv("./fixtures/miss-clothing.csv")
+# accessories_df["filename"] = "accessories"
+# clothing_df["filename"] = "clothing"
+# combined = pd.concat([accessories_df,clothing_df])
+# combined.to_csv('enrollment.csv',index=False,header=True)

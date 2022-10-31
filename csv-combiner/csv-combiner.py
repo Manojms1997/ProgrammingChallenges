@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import sys, getopt
+import time
 
 # take command line input
 class CSVCombiner():
@@ -12,12 +13,17 @@ class CSVCombiner():
         self.is_print = True
         self.is_output_file = False
         self.file_chunks = []
+        self.combined_csv = None
 
     def main(self,argv):
+        start_time = time.time()
         #arguments validation
         self.validate_args(argv)
         # process input csv files
         self.process_csv_files()
+        # combine csv files
+        self.combine_csv()
+        print(self.is_output_file)
         if not self.is_output_file:
             if not self.is_print:
                 print("enable printing on terminal or to a file!")
@@ -26,7 +32,10 @@ class CSVCombiner():
         else:
             self.create_csv_file()
             if self.is_print:
-                self.print_csv
+                self.print_csv()
+
+        to_time = time.time() - start_time
+        print("total time:", to_time)
         return
 
     def process_csv_files(self):
@@ -38,8 +47,10 @@ class CSVCombiner():
                 self.file_chunks.append(chunk)
 
     def print_csv(self):
-        for chunk in self.file_chunks:
-            print(chunk.to_csv(index=False, header=True, chunksize=10**4, line_terminator='\n'), end='')
+        # for chunk in self.file_chunks:
+        #     print(chunk.to_csv(index=False, header=True, chunksize=10**4, line_terminator='\n'), end='')
+        print(self.combined_csv.to_csv(index=False, header=True, chunksize=10**4, line_terminator='\n'), end='')
+
 
     def validate_args(self,argv):
         if len(argv) == 0:
@@ -65,7 +76,7 @@ class CSVCombiner():
         for opt in opts:
             opt_name = opt[0]
             opt_val = opt[1]
-            if opt_name == "o" or opt_name == "--output":
+            if opt_name == "-o" or opt_name == "--output":
                 self.is_output_file = True
                 self.output_file = opt_val
             elif opt_name == "--folder":
@@ -96,10 +107,12 @@ class CSVCombiner():
                 sys.exit(2)
             self.files.append(file)
         
-        
+    def combine_csv(self):
+        self.combined_csv = pd.concat(self.file_chunks)
+
     def create_csv_file(self):
-        combined = pd.concat(self.file_chunks)
-        combined.to_csv(self.output_file+".csv",index=False,header=True)
+        # combined = pd.concat(self.file_chunks)
+        self.combined_csv.to_csv(self.output_file+".csv",index=False,header=True)
 
 
 
