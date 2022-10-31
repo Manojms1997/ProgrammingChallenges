@@ -32,12 +32,14 @@ class CSVCombiner():
     def process_csv_files(self):
         for file in self.files:
             file_name = os.path.basename(file)
-            chunk = pd.read_csv(file,chunksize=10**4)
-            chunk["filename"] = file_name
-            self.file_chunks.append(chunk)
+            for chunk in pd.read_csv(file,chunksize=10**4):
+            # chunk = pd.read_csv(file,chunksize=10**4)
+                chunk["filename"] = file_name
+                self.file_chunks.append(chunk)
 
-    def print_csv():
-        pass
+    def print_csv(self):
+        for chunk in self.file_chunks:
+            print(chunk.to_csv(index=False, header=True, chunksize=10**4, line_terminator='\n'), end='')
 
     def validate_args(self,argv):
         if len(argv) == 0:
@@ -95,8 +97,9 @@ class CSVCombiner():
             self.files.append(file)
         
         
-    def create_csv_file():
-        pass
+    def create_csv_file(self):
+        combined = pd.concat(self.file_chunks)
+        combined.to_csv(self.output_file+".csv",index=False,header=True)
 
 
 
