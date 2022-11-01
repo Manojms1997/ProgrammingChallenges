@@ -46,7 +46,8 @@ Your script would output
  -->
 
  # CSV Combiner
-    This is a command line tool for combining multiple csv files. CSV files are combined based on the column names. If two CSVs are having different columns, this tool handles that as well. 
+    
+This is a command line tool for combining multiple csv files. CSV files are combined based on the column names. If two CSVs are having different columns, this tool handles that as well. 
 
 ### Usage
 There are several ways this command line tool can be used for combining CSV files.
