@@ -68,12 +68,14 @@ class CSVCombiner():
             print("Enter csv files to be combined!")
             sys.exit(2)
         try:
+            print(argv)
             opts, files = getopt.getopt(argv,"o:",["folder=","output=","no-print"])
         except:
             print(CONSTS.ARG_ERROR_MESSAGE)
             sys.exit(2)
         self.validate_and_process_command_options(opts)
         self.validate_and_process_files(files)
+        return True
         
     ##########################################################################################
     # Function to validate the input CSV files                                               #
@@ -89,10 +91,10 @@ class CSVCombiner():
     # Function to validate command line options given by user                                #
     ##########################################################################################
     def validate_and_process_command_options(self,opts):
-        def folder_option_handler(opt_val): # Function to handle '--folder' option
+        def output_option_handler(opt_val): # Function to handle '--folder' option
             self.is_file_output = True
             self.output_file = opt_val
-        def output_option_handler(opt_val): # Function to handle '-o' or '--output' option
+        def folder_option_handler(opt_val): # Function to handle '-o' or '--output' option 
             self.folder = opt_val
             if not os.path.exists(opt_val):
                 print(CONSTS.WRONG_FOLDER_MESSAGE)
@@ -113,9 +115,9 @@ class CSVCombiner():
             opt_name = opt[0]
             opt_val = opt[1]
             if opt_name == "-o" or opt_name == "--output":
-                folder_option_handler(opt_val)
-            elif opt_name == "--folder":
                 output_option_handler(opt_val)
+            elif opt_name == "--folder":
+                folder_option_handler(opt_val)
             elif opt_name == "--no-print":
                 no_print_option_handler()
     

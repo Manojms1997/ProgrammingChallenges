@@ -2,6 +2,7 @@
 
 import csv
 import hashlib
+import os
 import os.path as path
 import random
 
@@ -23,11 +24,13 @@ def write_file(writer, length, categories):
 
 
 def main():
+    if not os.path.exists('./fixtures'):
+        os.makedirs('fixtures')
     for fn, categories in FILES.items():
         with open(path.join(DIR, 'fixtures', fn), 'w', encoding='utf-8') as fh:
             write_file(
                 csv.writer(fh, doublequote=False, escapechar='\\', quoting=csv.QUOTE_ALL),
-                random.randint(100, 1000),
+                random.randint(5, 5),
                 categories
             )
 
