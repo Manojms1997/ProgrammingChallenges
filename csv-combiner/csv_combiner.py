@@ -23,7 +23,6 @@ class CSVCombiner():
         self.combined_csv = None
 
     def main(self,argv):
-        print("argv",argv)
         self.validate_args(argv)
         self.process_csv_files()
         self.combine_csv()
@@ -69,7 +68,6 @@ class CSVCombiner():
             print("Enter csv files to be combined!")
             sys.exit(2)
         try:
-            print(argv)
             opts, files = getopt.getopt(argv,"o:",["folder=","output=","no-print"])
         except:
             print(CONSTS.ARG_ERROR_MESSAGE)
