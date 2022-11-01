@@ -89,3 +89,7 @@ python csv_combiner.py -o output --no-print --folder ./fixtures
 5. io
 6. unittest
 
+To use the same environment as what I have used, create a conda environment using the environment.yml file given using the command:
+```
+conda env create -f environment.yml
+``` 
