@@ -62,29 +62,35 @@ class CSVCombiner():
             self.files.append(file)
     
     def validate_and_process_command_options(self,opts):
+        def folder_option_handler(opt_val):
+            self.is_output_file = True
+            self.output_file = opt_val
+        def output_option_handler(opt_val):
+            self.folder = opt_val
+            if not os.path.exists(opt_val):
+                print(CONSTS.WRONG_FOLDER_MESSAGE)
+                sys.exit(2)
+            csv_files = [f for f in os.listdir(self.folder) if f.endswith('.csv')]
+            if len(csv_files) <= 0:
+                print(CONSTS.NO_FILE_ERROR)
+                sys.exit(2)
+            for csv_file in csv_files:
+                if self.folder[-1] == '/':
+                    file_path = self.folder + csv_file
+                else:
+                    file_path = self.folder + "/" + csv_file
+                self.files.append(file_path)
+        def no_print_option_handler():
+            self.is_print = True
         for opt in opts:
             opt_name = opt[0]
             opt_val = opt[1]
             if opt_name == "-o" or opt_name == "--output":
-                self.is_output_file = True
-                self.output_file = opt_val
+                folder_option_handler(opt_val)
             elif opt_name == "--folder":
-                self.folder = opt_val
-                if not os.path.exists(opt_val):
-                    print(CONSTS.WRONG_FOLDER_MESSAGE)
-                    sys.exit(2)
-                csv_files = [f for f in os.listdir(self.folder) if f.endswith('.csv')]
-                if len(csv_files) <= 0:
-                    print(CONSTS.NO_FILE_ERROR)
-                    sys.exit(2)
-                for csv_file in csv_files:
-                    if self.folder[-1] == '/':
-                        file_path = self.folder + csv_file
-                    else:
-                        file_path = self.folder + "/" + csv_file
-                    self.files.append(file_path)
+                output_option_handler(opt_val)
             elif opt_name == "--no-print":
-                self.is_print = True
+                no_print_option_handler()
     
     def combine_csv(self):
         self.combined_csv = pd.concat(self.file_chunks)
