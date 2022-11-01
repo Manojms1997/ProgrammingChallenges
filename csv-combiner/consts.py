@@ -14,3 +14,4 @@ python csv-combiner.py -o op.csv file1.csv file2.csv ...\n\
 valid options are: '-o','--output','--folder','--no-print'"
 WRONG_FOLDER_MESSAGE = "Wrong folder path!!"
 NO_FILE_ERROR = "No CSV files present in the folder specified!"
+OUTPUT_FILE_NAME_ERROR = "Output file name not specified!!"

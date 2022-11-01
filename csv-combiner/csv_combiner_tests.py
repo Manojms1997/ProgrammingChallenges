@@ -48,4 +48,26 @@ class CSVTest(unittest.TestCase):
         self.assertEqual(self.csv_combiner.is_file_output,True)
         self.assertEqual(self.csv_combiner.output_file,'op')
 
+    def test_wrong_folder_path(self):
+        capturedOutput = StringIO()
+        sys.stdout = capturedOutput
+        with self.assertRaises(SystemExit) as cm:
+            self.csv_combiner.validate_args(['--folder', './wrong-folder-path'])
+        sys.stdout = sys.__stdout__ 
+        self.assertIn(CONSTS.WRONG_FOLDER_MESSAGE, capturedOutput.getvalue())
+        self.assertEqual(cm.exception.code, 2)
+
+    def test_csv_in_folder(self):
+        self.csv_combiner.validate_args(['--folder', './fixtures'])
+        self.assertEqual(self.csv_combiner.files,['./fixtures/accessories.csv', './fixtures/clothing.csv', './fixtures/household_cleaners.csv'])
+
+    def test_no_print_option(self):
+        self.csv_combiner.validate_args(['./fixtures/clothing.csv'])
+        self.assertEqual(self.csv_combiner.is_print,True)
+    
+    def test_print_option(self):
+        self.csv_combiner.validate_args(['--no-print','-o','-op','./fixtures/clothing.csv'])
+        self.assertEqual(self.csv_combiner.is_print,False)
+    
+    
 unittest.main()

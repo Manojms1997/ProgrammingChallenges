@@ -23,6 +23,7 @@ class CSVCombiner():
         self.combined_csv = None
 
     def main(self,argv):
+        print("argv",argv)
         self.validate_args(argv)
         self.process_csv_files()
         self.combine_csv()
@@ -92,6 +93,9 @@ class CSVCombiner():
     ##########################################################################################
     def validate_and_process_command_options(self,opts):
         def output_option_handler(opt_val): # Function to handle '--folder' option
+            if opt_val == "":
+                print(CONSTS.OUTPUT_FILE_NAME_ERROR)
+                sys.exit(2)
             self.is_file_output = True
             self.output_file = opt_val
         def folder_option_handler(opt_val): # Function to handle '-o' or '--output' option 
