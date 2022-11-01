@@ -18,7 +18,10 @@ class CSVCombiner():
         self.validate_args(argv)
         self.process_csv_files()
         self.combine_csv()
-        print(self.is_output_file)
+        self.output_csv()
+        return
+
+    def output_csv(self):
         if not self.is_output_file:
             if not self.is_print:
                 print(CONSTS.ENABLE_PRINT)
@@ -28,7 +31,6 @@ class CSVCombiner():
             self.create_csv_file()
             if self.is_print:
                 self.print_csv()
-        return
 
     def process_csv_files(self):
         for file in self.files:
@@ -45,14 +47,21 @@ class CSVCombiner():
             print("Enter csv files to be combined!")
             sys.exit(2)
         try:
-            opts, args = getopt.getopt(argv,"o:",["folder=","output=","no-print"])
+            opts, files = getopt.getopt(argv,"o:",["folder=","output=","no-print"])
         except:
             print(CONSTS.ARG_ERROR_MESSAGE)
             sys.exit(2)
+        self.validate_and_process_command_options(opts)
+        self.validate_and_process_files(files)
         
-        files = args
-        print("opts",opts)
-        # parse all options:
+    def validate_and_process_files(self,files):
+        for file in files:
+            if not os.path.exists(file):
+                print(CONSTS.FILE_ERROR)
+                sys.exit(2)
+            self.files.append(file)
+    
+    def validate_and_process_command_options(self,opts):
         for opt in opts:
             opt_name = opt[0]
             opt_val = opt[1]
@@ -76,14 +85,7 @@ class CSVCombiner():
                     self.files.append(file_path)
             elif opt_name == "--no-print":
                 self.is_print = True
-
-        # check if files are present
-        for file in files:
-            if not os.path.exists(file):
-                print(CONSTS.FILE_ERROR)
-                sys.exit(2)
-            self.files.append(file)
-        
+    
     def combine_csv(self):
         self.combined_csv = pd.concat(self.file_chunks)
 
